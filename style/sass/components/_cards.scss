@@ -1,0 +1,70 @@
+.card{
+    background: rgb(255, 255, 255);
+    padding: 0.2rem;
+    box-shadow: 2px 3px 5px 0px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 2px 3px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2px 3px 5px 0px rgba(0,0,0,0.75);
+    border-radius: 5px;
+
+    &__creator{
+        display: flex;
+        flex-direction: column;
+        gap : 5px;
+        align-items: center;
+        .open-add-card{
+            background: none;
+            border: none;
+            width: 100%;
+            &:hover{
+                background-color: #e4d8d8;
+            }
+
+            &:active{
+                background-color: #d7caca;
+            }
+
+            
+            
+        }
+        .btn-add-card__submit{
+            background-color: #7fe676;
+            border: none;
+            border-radius: 5px;
+            padding: 5px;
+
+            &:hover{
+                background-color: #63d159;
+            }
+
+            &:active{
+                background-color: #4ac040;
+            }
+        }
+
+        .close-card-creator{
+
+            background-color: #e09494;
+            border: none;
+            border-radius: 5px;
+            padding : 5px;
+
+            &:hover{
+                background-color: #dc7878;
+            }
+            &:active{
+                background-color: #e04b4b;
+            }
+        }
+        form{
+            width: 100%;
+            gap : 5px;
+        }
+        .text-add-card {
+            resize: none;
+            min-height: 4rem;
+            
+            width: 100%;
+        }
+    }
+}
+

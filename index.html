@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://css.gg/css?=|math-plus" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/pro.min.css" />
+
+    <script src="https://use.fortawesome.com/1ce05b4b.js"></script>
+    <link rel="stylesheet" href="style/css/main.css">
+    
+    <title>Clone Trello</title>
+</head>
+<body>
+    <div class="container">
+        
+
+        <div class="list">
+            <div class="list__header">
+                <h3>In Progress</h3>
+                <button class="btn-delete-list">X</button>
+            </div>            
+        
+            <div class="list__cards">
+                <div class="card">
+                    Test
+                </div>
+                <div class="card">
+                    Test
+                </div>
+                <div class="card">
+                    Test
+                </div>
+                <div class="card">
+                    Test
+                </div>
+                
+                
+            </div>
+
+            <div class="card__creator">
+                
+                <button class="open-add-card">Add a card</button>
+                <form>
+                    <textarea name="text-add-card" class="text-add-card">Type title here for this card</textarea>
+                    <div class="controls-section">
+                        <button class="btn-add-card__submit">
+                            Ajouter une carte</button>
+                        <button class="close-card-creator">X</button>
+                    </div>
+                </form>
+            </div>       
+        </div>
+
+        <div class="list-creator">
+            <button class="open-add-list">Ajoutez une autre liste</button>
+            <input type="text" class="list-title" placeholder="Type the title of the list">
+            <button class="btn-add-list__submit">Ajouter une liste</button>
+            <button class="close-list-creator">X</button>
+        </div>
+    </div>
+
+    <script src="./scripts/index.js"></script>
+</body>
+</html>

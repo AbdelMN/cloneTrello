@@ -1,0 +1,28 @@
+.list{
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    height: fit-content;
+    max-height: 100%;
+    overflow-x: scroll;
+    width: 17rem;
+    background: rgb(247, 241, 241);
+    border-radius: 10px;
+    gap: 10px;
+    &__header{
+        display: flex;
+        justify-content: space-between;
+    }
+    &__cards{
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+
+}
+
+.list-creator{
+    display: flex;
+    flex-direction: column;
+}

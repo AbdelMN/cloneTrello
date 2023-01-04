@@ -1,0 +1,111 @@
+*, ::after, ::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  background: rgb(89, 226, 252);
+  background: linear-gradient(95deg, rgb(89, 226, 252) 2%, rgb(192, 203, 231) 34%, rgb(160, 186, 210) 68%);
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  height: 100%;
+  padding: 10px;
+}
+
+body, button, textarea {
+  font-family: Arial;
+}
+
+.card {
+  background: rgb(255, 255, 255);
+  padding: 0.2rem;
+  box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.75);
+  -webkit-box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.75);
+  border-radius: 5px;
+}
+.card__creator {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  align-items: center;
+}
+.card__creator .open-add-card {
+  background: none;
+  border: none;
+  width: 100%;
+}
+.card__creator .open-add-card:hover {
+  background-color: #e4d8d8;
+}
+.card__creator .open-add-card:active {
+  background-color: #d7caca;
+}
+.card__creator .btn-add-card__submit {
+  background-color: #7fe676;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+}
+.card__creator .btn-add-card__submit:hover {
+  background-color: #63d159;
+}
+.card__creator .btn-add-card__submit:active {
+  background-color: #4ac040;
+}
+.card__creator .close-card-creator {
+  background-color: #e09494;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+}
+.card__creator .close-card-creator:hover {
+  background-color: #dc7878;
+}
+.card__creator .close-card-creator:active {
+  background-color: #e04b4b;
+}
+.card__creator form {
+  width: 100%;
+  gap: 5px;
+}
+.card__creator .text-add-card {
+  resize: none;
+  min-height: 4rem;
+  width: 100%;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  height: fit-content;
+  max-height: 100%;
+  overflow-x: scroll;
+  width: 17rem;
+  background: rgb(247, 241, 241);
+  border-radius: 10px;
+  gap: 10px;
+}
+.list__header {
+  display: flex;
+  justify-content: space-between;
+}
+.list__cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.list-creator {
+  display: flex;
+  flex-direction: column;
+}
+
+/*# sourceMappingURL=main.css.map */
