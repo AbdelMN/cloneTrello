@@ -23,6 +23,45 @@
             </div>            
         
             <div class="list__cards">
+                <div class="card" draggable="true">
+                    Test
+                </div>
+                <div class="card">
+                    Test
+                </div>
+                <div class="card">
+                    Test
+                </div>
+                <div class="card">
+                    Test
+                </div>
+                
+                
+            </div>
+
+            <div class="card__creator">
+                
+                <button class="open-add-card">Add a card</button>
+                <form>
+                    <span class="validation"></span>
+                    <textarea name="text-add-card" class="text-add-card" placeholder="Type title here for this card"></textarea>
+                    <div class="controls-section">
+                        <button class="btn-add-card__submit">
+                            Ajouter une carte</button>
+                       
+                            <button type='button' class="close-card-creator">X</button>
+                    </div>
+                </form> 
+            </div>       
+        </div>
+
+        <div class="list">
+            <div class="list__header">
+                <h3>In Progress</h3>
+                <button class="btn-delete-list">X</button>
+            </div>            
+        
+            <div class="list__cards">
                 <div class="card">
                     Test
                 </div>
@@ -43,11 +82,12 @@
                 
                 <button class="open-add-card">Add a card</button>
                 <form>
-                    <textarea name="text-add-card" class="text-add-card">Type title here for this card</textarea>
+                    <span class="validation"></span>
+                    <textarea name="text-add-card" class="text-add-card" placeholder="Type title here for this card"></textarea>
                     <div class="controls-section">
                         <button class="btn-add-card__submit">
                             Ajouter une carte</button>
-                        <button class="close-card-creator">X</button>
+                        <button type='button' class="close-card-creator">X</button>
                     </div>
                 </form>
             </div>       
@@ -59,7 +99,11 @@
             <button class="btn-add-list__submit">Ajouter une liste</button>
             <button class="close-list-creator">X</button>
         </div>
+
+        
     </div>
+
+    
 
     <script src="./scripts/index.js"></script>
 </body>
