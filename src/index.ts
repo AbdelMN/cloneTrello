@@ -1,7 +1,7 @@
 const element = document.querySelectorAll(".list") as NodeListOf<HTMLDivElement>;
 
 function createListeners(container : HTMLDivElement){
-    console.log(container);
+    
     const deleteListBtn = container.querySelector(".btn-delete-list") as HTMLButtonElement;
     const openCardCreatorBtn = container.querySelector(".open-add-card") as HTMLButtonElement;
     const closeCardCreatorBtn = container.querySelector(".close-card-creator") as HTMLButtonElement;
@@ -74,31 +74,58 @@ function handleSubmitForm(e:Event){
     const cardsContainer = container.querySelector(".list__cards") as HTMLDivElement;
     const card = document.createElement("div") as HTMLDivElement;
     card.className = "card";
+    card.draggable = true;
     card.innerHTML = textarea.value;    
     cardsContainer.appendChild(card);
+    DragDropListeners(card);
     
     
 }
 
-function handleDragStart(e:Event){
-    
-    //
+let dragSrcElement : HTMLDivElement;
+function handleDragStart( e:Event){
+    dragSrcElement = e.target as HTMLDivElement;
     
 }
 
 
 function handleDragOver(e:Event){
-    //
+    e.preventDefault()
+    
     
     
 }
 
-function handleDrop(e:Event){
+function handleDrop(this: HTMLElement, e:Event){
+    e.stopPropagation();
+    const target = e.target as HTMLDivElement;
+    if (dragSrcElement.classList.contains("card") && target.classList.contains("list")){
+        (target.querySelector(".list__cards") as HTMLDivElement).appendChild(dragSrcElement);
+
+    }else if (dragSrcElement.classList.contains("card") && !target.classList.contains("list")){
+        const parent = target.closest(".list");
+        if (parent){
+            (parent.querySelector(".list__cards") as HTMLDivElement).appendChild(dragSrcElement);
+        }
+    }if (dragSrcElement.classList.contains("list") && target.classList.contains("list")){
+        const ArrayNode = Array.from((target.parentNode as ParentNode).children)
+        const indexsrc : number = ArrayNode.indexOf(dragSrcElement);
+        const indextarget :number = ArrayNode.indexOf(target);
+        if (indexsrc < indextarget){
+            target.parentNode?.insertBefore(dragSrcElement,target.nextSibling);
+        }else{
+            target.parentNode?.insertBefore(dragSrcElement,target);
+        }
+        
+        
+        
+
+    }
+    
     //
 }
 
 
 
 
-
-
+console.log(element[0].parentNode);
