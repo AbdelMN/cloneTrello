@@ -96,7 +96,7 @@ function handleDragOver(e:Event){
     
 }
 
-function handleDrop(this: HTMLElement, e:Event){
+function handleDrop(e:Event){
     e.stopPropagation();
     const target = e.target as HTMLDivElement;
     if (dragSrcElement.classList.contains("card") && target.classList.contains("list")){
