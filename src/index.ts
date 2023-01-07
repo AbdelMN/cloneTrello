@@ -7,17 +7,15 @@ function createListeners(container : HTMLDivElement){
     const closeCardCreatorBtn = container.querySelector(".close-card-creator") as HTMLButtonElement;
     const submitCardCreationBtn = container.querySelector("form") as HTMLFormElement;
     
-    
     deleteListListeners(deleteListBtn);
     openCardCreatorListeners(openCardCreatorBtn);
     closeCardCreatorListeners(closeCardCreatorBtn);
     submitCardCreationListeners(submitCardCreationBtn);
     DragDropListeners(container);
-
 }
 
 function deleteListListeners(deleteListBtn : HTMLButtonElement){
-    deleteListBtn.addEventListener("click", handleListDelete);
+    deleteListBtn.addEventListener("click", (e:Event) => {handleDelete(e.target as HTMLButtonElement,"list")});
 }
 
 function openCardCreatorListeners(openCardCreatorBtn : HTMLButtonElement){
@@ -41,10 +39,18 @@ element.forEach((list : HTMLDivElement) => {
     createListeners(list);
 });
 
-function handleListDelete(this: HTMLElement, e:Event){
-    const btnTarget = e.target as HTMLButtonElement;
-    const parent = btnTarget.closest(".list") as HTMLDivElement; 
-    parent.remove();
+function handleDelete(btn:HTMLButtonElement, type:string){
+    console.log(type);
+    if (type == "list"){
+        console.log(btn);
+        const list = btn.closest(".list") as HTMLDivElement; 
+        list.remove();
+    }else if ( type == "card"){
+        
+        const card = btn.closest(".card") as HTMLDivElement; 
+        card.remove();
+    }
+    
     
     
 }
@@ -66,19 +72,20 @@ function handleSubmitForm(e:Event){
     const validationSpan = target.querySelector(".validation") as HTMLSpanElement; 
     if (textarea.value.length === 0){
         validationSpan.textContent = "Please enter a card title";
-        return;
+        
     }else{
         validationSpan.textContent = "";
+        const container = target.closest(".list") as HTMLDivElement;
+        const cardsContainer = container.querySelector(".list__cards") as HTMLDivElement;
+        const card = document.createElement("div") as HTMLDivElement;
+        card.className = "card";
+        card.draggable = true;
+        card.innerHTML = `
+        <p>${textarea.value}</p>
+        <button>X</button>`;    
+        cardsContainer.appendChild(card);
+        DragDropListeners(card);
     }
-    const container = target.closest(".list") as HTMLDivElement;
-    const cardsContainer = container.querySelector(".list__cards") as HTMLDivElement;
-    const card = document.createElement("div") as HTMLDivElement;
-    card.className = "card";
-    card.draggable = true;
-    card.innerHTML = textarea.value;    
-    cardsContainer.appendChild(card);
-    DragDropListeners(card);
-    
     
 }
 
@@ -88,6 +95,62 @@ function handleDragStart( e:Event){
     
 }
 
+// List Creator 
+const listcreator = document.querySelector(".list-creator") as HTMLDivElement;
+const openListCreatorBtn = listcreator.querySelector(".open-add-list") as HTMLButtonElement;
+const submitListCreationBtn = listcreator.querySelector("form") as HTMLFormElement;
+const closeListCreatorBtn = listcreator.querySelector(".close-list-creator") as HTMLButtonElement;
+
+openListCreatorBtn.addEventListener("click", (e) => handleOpenListCreator(e.target as HTMLButtonElement,true));
+closeListCreatorBtn.addEventListener("click", (e) => handleOpenListCreator(e.target as HTMLButtonElement,false));
+submitListCreationBtn.addEventListener("submit", createNewList);
+function handleOpenListCreator(btn:HTMLButtonElement, action : boolean){
+    const parent = btn.closest(".list-creator") as HTMLDivElement; 
+    const form = parent.querySelector("form") as HTMLFormElement;
+    if(action === true){
+        form.style.display = "block";
+    }else{
+        form.style.display = "none";
+    }
+
+}
+
+function createNewList(e:Event){
+    e.preventDefault();
+    const target = e.target as HTMLFormElement;
+    const input = target.querySelector(".list-title") as HTMLInputElement;
+    const ListHTML = `
+    
+        <div class="list__header">
+            <h3>${input.value}</h3>
+            <button class="btn-delete-list">X</button>
+        </div>            
+    
+        <div class="list__cards"></div>
+
+        <div class="card__creator">
+            
+            <button class="open-add-card">Add a card</button>
+            <form>
+                <span class="validation"></span>
+                <textarea name="text-add-card" class="text-add-card" placeholder="Type title here for this card"></textarea>
+                <div class="controls-section">
+                    <button class="btn-add-card__submit">
+                        Ajouter une carte</button>
+                    <button type='button' class="close-card-creator">X</button>
+                </div>
+            </form>
+        </div>       
+        `
+    const newList = document.createElement("div");
+    newList.className = "list";
+    newList.draggable = true;
+    newList.innerHTML = ListHTML;
+    const container = target.closest(".container") as HTMLDivElement;
+    
+    container.insertBefore(newList,target.parentElement);
+    createListeners(newList);
+}
 
 function handleDragOver(e:Event){
     e.preventDefault()
@@ -102,24 +165,20 @@ function handleDrop(e:Event){
     if (dragSrcElement.classList.contains("card") && target.classList.contains("list")){
         (target.querySelector(".list__cards") as HTMLDivElement).appendChild(dragSrcElement);
 
-    }else if (dragSrcElement.classList.contains("card") && !target.classList.contains("list")){
+    } else if (dragSrcElement.classList.contains("card") && !target.classList.contains("list")){
         const parent = target.closest(".list");
         if (parent){
             (parent.querySelector(".list__cards") as HTMLDivElement).appendChild(dragSrcElement);
         }
-    }if (dragSrcElement.classList.contains("list") && target.classList.contains("list")){
+    } if (dragSrcElement.classList.contains("list") && target.classList.contains("list")){
         const ArrayNode = Array.from((target.parentNode as ParentNode).children)
-        const indexsrc : number = ArrayNode.indexOf(dragSrcElement);
-        const indextarget :number = ArrayNode.indexOf(target);
-        if (indexsrc < indextarget){
-            target.parentNode?.insertBefore(dragSrcElement,target.nextSibling);
-        }else{
-            target.parentNode?.insertBefore(dragSrcElement,target);
-        }
-        
-        
-        
-
+        const indexSrc : number = ArrayNode.indexOf(dragSrcElement);
+        const indexTarget : number = ArrayNode.indexOf(target);
+        if (indexSrc < indexTarget){
+            (target.parentNode as ParentNode).insertBefore(dragSrcElement,target.nextSibling);
+        } else {
+            (target.parentNode as ParentNode).insertBefore(dragSrcElement,target);
+        }      
     }
     
     //

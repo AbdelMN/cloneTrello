@@ -25,4 +25,10 @@
 .list-creator{
     display: flex;
     flex-direction: column;
+
+    form{
+        display : none;
+        width: 100%;
+        gap : 5px;
+    }
 }

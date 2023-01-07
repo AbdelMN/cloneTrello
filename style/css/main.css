@@ -29,6 +29,9 @@ body, button, textarea {
   -webkit-box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 2px 3px 5px 0px rgba(0, 0, 0, 0.75);
   border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  padding: 5px;
 }
 .card__creator {
   display: flex;
@@ -107,6 +110,11 @@ body, button, textarea {
 .list-creator {
   display: flex;
   flex-direction: column;
+}
+.list-creator form {
+  display: none;
+  width: 100%;
+  gap: 5px;
 }
 
 /*# sourceMappingURL=main.css.map */
