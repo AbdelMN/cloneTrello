@@ -84,6 +84,9 @@ function handleSubmitForm(e:Event){
         <p>${textarea.value}</p>
         <button>X</button>`;    
         cardsContainer.appendChild(card);
+        const btn = card.querySelector("button") as HTMLButtonElement;
+        
+        btn.addEventListener("click", (e:Event) => {handleDelete(e.target as HTMLButtonElement,"card")});
         DragDropListeners(card);
     }
     
