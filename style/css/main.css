@@ -111,6 +111,13 @@ body, button, textarea {
   display: flex;
   flex-direction: column;
 }
+.list-creator .open-add-list {
+  background: none;
+  border: none;
+  border-radius: 5px;
+  background-color: rgba(169, 135, 135, 0.3803921569);
+  padding: 5px;
+}
 .list-creator form {
   display: none;
   width: 100%;

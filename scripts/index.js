@@ -1,36 +1,37 @@
 "use strict";
-const element = document.querySelectorAll(".list");
-function createListeners(container) {
-    const deleteListBtn = container.querySelector(".btn-delete-list");
-    const openCardCreatorBtn = container.querySelector(".open-add-card");
-    const closeCardCreatorBtn = container.querySelector(".close-card-creator");
-    const submitCardCreationBtn = container.querySelector("form");
-    deleteListListeners(deleteListBtn);
-    openCardCreatorListeners(openCardCreatorBtn);
-    closeCardCreatorListeners(closeCardCreatorBtn);
-    submitCardCreationListeners(submitCardCreationBtn);
-    DragDropListeners(container);
-}
-function deleteListListeners(deleteListBtn) {
-    deleteListBtn.addEventListener("click", (e) => { handleDelete(e.target, "list"); });
-}
-function openCardCreatorListeners(openCardCreatorBtn) {
-    openCardCreatorBtn.addEventListener("click", (e) => { handleCardCreatorOpen(e.target, true); });
-}
-function closeCardCreatorListeners(closeCardCreatorBtn) {
-    closeCardCreatorBtn.addEventListener("click", (e) => { handleCardCreatorOpen(e.target, false); });
-}
-function submitCardCreationListeners(submitCardCreationBtn) {
-    submitCardCreationBtn.addEventListener("submit", handleSubmitForm);
+// -----------  Listeners Creation  -----------
+function createListeners(container, type) {
+    if (type == "list") {
+        const deleteListBtn = container.querySelector(".btn-delete-list");
+        const openCardCreatorBtn = container.querySelector(".open-add-card");
+        const closeCardCreatorBtn = container.querySelector(".close-card-creator");
+        const submitCardCreationBtn = container.querySelector("form");
+        deleteListBtn.addEventListener("click", (e) => { handleDelete(e.target, "list"); });
+        openCardCreatorBtn.addEventListener("click", (e) => { handleCardCreatorOpen(e.target, true); });
+        closeCardCreatorBtn.addEventListener("click", (e) => { handleCardCreatorOpen(e.target, false); });
+        submitCardCreationBtn.addEventListener("submit", handleSubmitForm);
+        DragDropListeners(container);
+    }
+    else if (type == "card") {
+        const btn = container.querySelector("button");
+        btn.addEventListener("click", (e) => { handleDelete(e.target, "card"); });
+        DragDropListeners(container);
+    }
+    else if (type == "listcreator") {
+        const openListCreatorBtn = container.querySelector(".open-add-list");
+        const submitListCreationBtn = container.querySelector("form");
+        const closeListCreatorBtn = container.querySelector(".close-list-creator");
+        openListCreatorBtn.addEventListener("click", (e) => handleOpenListCreator(e.target, true));
+        closeListCreatorBtn.addEventListener("click", (e) => handleOpenListCreator(e.target, false));
+        submitListCreationBtn.addEventListener("submit", createNewList);
+    }
 }
 function DragDropListeners(container) {
     container.addEventListener("dragstart", handleDragStart);
     container.addEventListener("dragover", handleDragOver);
     container.addEventListener('drop', handleDrop);
 }
-element.forEach((list) => {
-    createListeners(list);
-});
+// --- Handle Deletetion for Lists or cards (type : "list" or "card")
 function handleDelete(btn, type) {
     console.log(type);
     if (type == "list") {
@@ -43,13 +44,17 @@ function handleDelete(btn, type) {
         card.remove();
     }
 }
+// --- Handle Open or Close for Card Creator (action : true = open, false = close)
 function handleCardCreatorOpen(btn, action) {
-    const parent = btn.closest(".list");
+    const parent = btn.closest(".card__creator");
     const form = parent.querySelector("form");
     if (action === true) {
         form.style.display = "block";
+        btn.style.display = "none";
     }
     else {
+        const addCardBtn = parent.querySelector(".open-add-card");
+        addCardBtn.style.display = "block";
         form.style.display = "none";
     }
 }
@@ -72,30 +77,20 @@ function handleSubmitForm(e) {
         <p>${textarea.value}</p>
         <button>X</button>`;
         cardsContainer.appendChild(card);
-        const btn = card.querySelector("button");
-        btn.addEventListener("click", (e) => { handleDelete(e.target, "card"); });
-        DragDropListeners(card);
+        createListeners(card, "card");
     }
 }
-let dragSrcElement;
-function handleDragStart(e) {
-    dragSrcElement = e.target;
-}
-// List Creator 
-const listcreator = document.querySelector(".list-creator");
-const openListCreatorBtn = listcreator.querySelector(".open-add-list");
-const submitListCreationBtn = listcreator.querySelector("form");
-const closeListCreatorBtn = listcreator.querySelector(".close-list-creator");
-openListCreatorBtn.addEventListener("click", (e) => handleOpenListCreator(e.target, true));
-closeListCreatorBtn.addEventListener("click", (e) => handleOpenListCreator(e.target, false));
-submitListCreationBtn.addEventListener("submit", createNewList);
+// -----------  List Creator  -----------
 function handleOpenListCreator(btn, action) {
     const parent = btn.closest(".list-creator");
     const form = parent.querySelector("form");
     if (action === true) {
+        btn.style.display = "none";
         form.style.display = "block";
     }
     else {
+        const addListBtn = parent.querySelector(".open-add-list");
+        addListBtn.style.display = "block";
         form.style.display = "none";
     }
 }
@@ -132,7 +127,12 @@ function createNewList(e) {
     newList.innerHTML = ListHTML;
     const container = target.closest(".container");
     container.insertBefore(newList, target.parentElement);
-    createListeners(newList);
+    createListeners(newList, "list");
+}
+// -----------  Drag & Drop  -----------
+let dragSrcElement;
+function handleDragStart(e) {
+    dragSrcElement = e.target;
 }
 function handleDragOver(e) {
     e.preventDefault();
@@ -160,6 +160,11 @@ function handleDrop(e) {
             target.parentNode.insertBefore(dragSrcElement, target);
         }
     }
-    //
 }
-console.log(element[0].parentNode);
+// -----------  Main  -----------
+const element = document.querySelectorAll(".list");
+element.forEach((list) => {
+    createListeners(list, "list");
+});
+const listcreator = document.querySelector(".list-creator");
+createListeners(listcreator, "listcreator");

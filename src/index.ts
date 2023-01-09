@@ -1,32 +1,30 @@
-const element = document.querySelectorAll(".list") as NodeListOf<HTMLDivElement>;
+// -----------  Listeners Creation  -----------
+function createListeners(container : HTMLDivElement, type:string){
+    if (type == "list"){
+        const deleteListBtn = container.querySelector(".btn-delete-list") as HTMLButtonElement;
+        const openCardCreatorBtn = container.querySelector(".open-add-card") as HTMLButtonElement;
+        const closeCardCreatorBtn = container.querySelector(".close-card-creator") as HTMLButtonElement;
+        const submitCardCreationBtn = container.querySelector("form") as HTMLFormElement;
+        
+        deleteListBtn.addEventListener("click", (e:Event) => {handleDelete(e.target as HTMLButtonElement,"list")});
+        openCardCreatorBtn.addEventListener("click", (e:Event)=>{handleCardCreatorOpen(e.target as HTMLButtonElement, true)});
+        closeCardCreatorBtn.addEventListener("click", (e:Event)=>{handleCardCreatorOpen(e.target as HTMLButtonElement, false)});
+        submitCardCreationBtn.addEventListener("submit", handleSubmitForm);
+        DragDropListeners(container);
+    } else if (type == "card"){
+        const btn = container.querySelector("button") as HTMLButtonElement;
+        btn.addEventListener("click", (e:Event) => {handleDelete(e.target as HTMLButtonElement,"card")});
+        DragDropListeners(container);
+    } else if (type =="listcreator"){
+        
+        const openListCreatorBtn = container.querySelector(".open-add-list") as HTMLButtonElement;
+        const submitListCreationBtn = container.querySelector("form") as HTMLFormElement;
+        const closeListCreatorBtn = container.querySelector(".close-list-creator") as HTMLButtonElement;
 
-function createListeners(container : HTMLDivElement){
-    
-    const deleteListBtn = container.querySelector(".btn-delete-list") as HTMLButtonElement;
-    const openCardCreatorBtn = container.querySelector(".open-add-card") as HTMLButtonElement;
-    const closeCardCreatorBtn = container.querySelector(".close-card-creator") as HTMLButtonElement;
-    const submitCardCreationBtn = container.querySelector("form") as HTMLFormElement;
-    
-    deleteListListeners(deleteListBtn);
-    openCardCreatorListeners(openCardCreatorBtn);
-    closeCardCreatorListeners(closeCardCreatorBtn);
-    submitCardCreationListeners(submitCardCreationBtn);
-    DragDropListeners(container);
-}
-
-function deleteListListeners(deleteListBtn : HTMLButtonElement){
-    deleteListBtn.addEventListener("click", (e:Event) => {handleDelete(e.target as HTMLButtonElement,"list")});
-}
-
-function openCardCreatorListeners(openCardCreatorBtn : HTMLButtonElement){
-    openCardCreatorBtn.addEventListener("click", (e:Event)=>{handleCardCreatorOpen(e.target as HTMLButtonElement, true)});
-}
-function closeCardCreatorListeners(closeCardCreatorBtn : HTMLButtonElement){
-    closeCardCreatorBtn.addEventListener("click", (e:Event)=>{handleCardCreatorOpen(e.target as HTMLButtonElement, false)});
-}
-
-function submitCardCreationListeners(submitCardCreationBtn : HTMLFormElement){
-    submitCardCreationBtn.addEventListener("submit", handleSubmitForm);
+        openListCreatorBtn.addEventListener("click", (e) => handleOpenListCreator(e.target as HTMLButtonElement,true));
+        closeListCreatorBtn.addEventListener("click", (e) => handleOpenListCreator(e.target as HTMLButtonElement,false));
+        submitListCreationBtn.addEventListener("submit", createNewList);
+    }
 }
 
 function DragDropListeners(container : HTMLDivElement){
@@ -35,32 +33,30 @@ function DragDropListeners(container : HTMLDivElement){
     container.addEventListener('drop', handleDrop);
 }
 
-element.forEach((list : HTMLDivElement) => {
-    createListeners(list);
-});
-
+// --- Handle Deletetion for Lists or cards (type : "list" or "card")
 function handleDelete(btn:HTMLButtonElement, type:string){
     console.log(type);
     if (type == "list"){
         console.log(btn);
         const list = btn.closest(".list") as HTMLDivElement; 
         list.remove();
-    }else if ( type == "card"){
+    } else if ( type == "card"){
         
         const card = btn.closest(".card") as HTMLDivElement; 
         card.remove();
-    }
-    
-    
-    
+    } 
 }
 
+// --- Handle Open or Close for Card Creator (action : true = open, false = close)
 function handleCardCreatorOpen(btn : HTMLButtonElement, action:boolean){
-    const parent = btn.closest(".list") as HTMLDivElement; 
+    const parent = btn.closest(".card__creator") as HTMLDivElement; 
     const form = parent.querySelector("form") as HTMLFormElement;
     if(action === true){
         form.style.display = "block";
-    }else{
+        btn.style.display = "none";
+    } else{
+        const addCardBtn = parent.querySelector(".open-add-card") as HTMLButtonElement;
+        addCardBtn.style.display = "block";
         form.style.display = "none";
     }
 }
@@ -72,8 +68,7 @@ function handleSubmitForm(e:Event){
     const validationSpan = target.querySelector(".validation") as HTMLSpanElement; 
     if (textarea.value.length === 0){
         validationSpan.textContent = "Please enter a card title";
-        
-    }else{
+    } else {
         validationSpan.textContent = "";
         const container = target.closest(".list") as HTMLDivElement;
         const cardsContainer = container.querySelector(".list__cards") as HTMLDivElement;
@@ -84,38 +79,24 @@ function handleSubmitForm(e:Event){
         <p>${textarea.value}</p>
         <button>X</button>`;    
         cardsContainer.appendChild(card);
-        const btn = card.querySelector("button") as HTMLButtonElement;
-        
-        btn.addEventListener("click", (e:Event) => {handleDelete(e.target as HTMLButtonElement,"card")});
-        DragDropListeners(card);
+        createListeners(card,"card");
     }
-    
 }
 
-let dragSrcElement : HTMLDivElement;
-function handleDragStart( e:Event){
-    dragSrcElement = e.target as HTMLDivElement;
-    
-}
 
-// List Creator 
-const listcreator = document.querySelector(".list-creator") as HTMLDivElement;
-const openListCreatorBtn = listcreator.querySelector(".open-add-list") as HTMLButtonElement;
-const submitListCreationBtn = listcreator.querySelector("form") as HTMLFormElement;
-const closeListCreatorBtn = listcreator.querySelector(".close-list-creator") as HTMLButtonElement;
 
-openListCreatorBtn.addEventListener("click", (e) => handleOpenListCreator(e.target as HTMLButtonElement,true));
-closeListCreatorBtn.addEventListener("click", (e) => handleOpenListCreator(e.target as HTMLButtonElement,false));
-submitListCreationBtn.addEventListener("submit", createNewList);
+// -----------  List Creator  -----------
 function handleOpenListCreator(btn:HTMLButtonElement, action : boolean){
     const parent = btn.closest(".list-creator") as HTMLDivElement; 
     const form = parent.querySelector("form") as HTMLFormElement;
     if(action === true){
+        btn.style.display = "none";
         form.style.display = "block";
     }else{
+        const addListBtn = parent.querySelector(".open-add-list") as HTMLButtonElement;
+        addListBtn.style.display = "block";
         form.style.display = "none";
     }
-
 }
 
 function createNewList(e:Event){
@@ -152,14 +133,18 @@ function createNewList(e:Event){
     const container = target.closest(".container") as HTMLDivElement;
     
     container.insertBefore(newList,target.parentElement);
-    createListeners(newList);
+    createListeners(newList,"list");
+}
+
+
+// -----------  Drag & Drop  -----------
+let dragSrcElement : HTMLDivElement;
+function handleDragStart( e:Event){
+    dragSrcElement = e.target as HTMLDivElement;    
 }
 
 function handleDragOver(e:Event){
-    e.preventDefault()
-    
-    
-    
+    e.preventDefault()    
 }
 
 function handleDrop(e:Event){
@@ -182,12 +167,14 @@ function handleDrop(e:Event){
         } else {
             (target.parentNode as ParentNode).insertBefore(dragSrcElement,target);
         }      
-    }
-    
-    //
+    }   
 }
 
+// -----------  Main  -----------
+const element = document.querySelectorAll(".list") as NodeListOf<HTMLDivElement>;
+element.forEach((list : HTMLDivElement) => {
+    createListeners(list,"list");
+});
 
-
-
-console.log(element[0].parentNode);
+const listcreator = document.querySelector(".list-creator") as HTMLDivElement;
+createListeners(listcreator,"listcreator");

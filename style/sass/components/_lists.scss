@@ -26,6 +26,13 @@
     display: flex;
     flex-direction: column;
 
+    .open-add-list {
+        background: none;
+        border: none;
+        border-radius: 5px;
+        background-color: #a9878761;
+        padding: 5px;
+    }
     form{
         display : none;
         width: 100%;
